@@ -1,4 +1,6 @@
 .env
+.env.docker
+
 *.txt
 
 # Binaries for programs and plugins
