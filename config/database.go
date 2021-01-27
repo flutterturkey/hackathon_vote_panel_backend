@@ -1,7 +1,6 @@
 package config
 
 import (
-	"log"
 	"os"
 
 	"github.com/jinzhu/gorm"
@@ -12,7 +11,7 @@ import (
 var DB *gorm.DB
 
 // Database Initialization
-func Database() *gorm.DB {
+func Database() (*gorm.DB, error) {
 	driver := os.Getenv("DATABASE_DRIVER")
 	database := os.Getenv("DATABASE_URL")
 
@@ -20,9 +19,8 @@ func Database() *gorm.DB {
 	DB, err = gorm.Open(driver, database)
 
 	if err != nil {
-		log.Panic(err)
+		return nil, err
 	}
-	log.Println("Database Connected")
 
-	return DB
+	return DB, nil
 }
