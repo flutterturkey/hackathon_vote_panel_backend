@@ -73,8 +73,31 @@ func Logout(c echo.Context) error {
 }
 
 //Test godoc
+// @Summary Test
+// @Description Test
+// @Tags Home
+// @Produce html
+// @Success 200 {string} string
+// @Failure 400 {string} string
+// @Failure 404 {string} string
+// @Failure 500 {string} string
+// @Router /test [get]
 func Test(c echo.Context) error {
 	req := c.Request()
 	format := `<code> Protocol: %s<br> Host: %s<br> Method: %s<br> Path: %s<br> </code>`
 	return c.HTML(http.StatusOK, fmt.Sprintf(format, req.Proto, req.Host, req.Method, req.URL.Path))
+}
+
+// Ready godoc
+// @Summary Ready status
+// @Description Is api ready
+// @Tags Home
+// @Produce html
+// @Success 200 {string} string
+// @Failure 400 {string} string
+// @Failure 404 {string} string
+// @Failure 500 {string} string
+// @Router /ready [get]
+func Ready(c echo.Context) error {
+	return c.HTML(200, "OK")
 }

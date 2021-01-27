@@ -21,6 +21,7 @@ func Init(app *echo.Echo) {
 
 	app.GET("/", controllers.Index)
 	app.GET("/test", controllers.Test)
+	app.GET("/ready", controllers.Ready)
 	app.GET("/docs/*", echoSwagger.WrapHandler)
 
 	api := app.Group("/api", middlewares.Jwt())

@@ -1,4 +1,3 @@
-basePath: '{{.BasePath}}'
 definitions:
   models.User:
     properties:
@@ -18,11 +17,9 @@ definitions:
     - role
     - username
     type: object
-host: '{{.Host}}'
 info:
   contact: {}
   description: API documentation by Swagger
-  license: {}
   title: Golang Echo API
   version: "1.0"
 paths:
@@ -149,7 +146,6 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/models.User'
-            type: object
         "400":
           description: Bad Request
           schema:
@@ -207,7 +203,6 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.User'
-            type: object
         "400":
           description: Bad Request
           schema:
@@ -256,7 +251,6 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.User'
-            type: object
         "400":
           description: Bad Request
           schema:
@@ -274,6 +268,56 @@ paths:
       summary: UserUpdate
       tags:
       - User
+  /ready:
+    get:
+      description: Is api ready
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Ready status
+      tags:
+      - Home
+  /test:
+    get:
+      description: Test
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Test
+      tags:
+      - Home
 securityDefinitions:
   ApiKeyAuth:
     in: header
