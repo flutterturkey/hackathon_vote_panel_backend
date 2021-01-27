@@ -17,7 +17,6 @@ func Database() (*gorm.DB, error) {
 
 	var err error
 	DB, err = gorm.Open(driver, database)
-
 	if err != nil {
 		return nil, err
 	}

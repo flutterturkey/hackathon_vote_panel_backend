@@ -1,8 +1,8 @@
 package tests
 
 import (
-	"log"
 	"goBoilterplate/config"
+	"log"
 	"os"
 	"testing"
 
@@ -16,7 +16,10 @@ func TestMain(m *testing.M) {
 		log.Fatal("Error loading .env file")
 	}
 
-	db := config.Database()
+	db, err := config.Database()
+	if err != nil {
+		log.Fatal("Db connection error")
+	}
 	defer db.Close()
 
 	config.Redis()
