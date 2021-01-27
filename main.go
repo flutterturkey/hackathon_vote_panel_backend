@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
 	"goBoilterplate/app/console"
+	"goBoilterplate/app/models"
 	"goBoilterplate/app/router"
 	"goBoilterplate/config"
 	"gopkg.in/tylerb/graceful.v1"
@@ -32,6 +33,11 @@ func main() {
 	if err != nil {
 		app.Logger.Fatal(err)
 	}
+	app.Logger.Info("Db connected")
+	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.UserProfile{})
+	db.AutoMigrate(&models.Profile{})
+
 	defer db.Close()
 
 	config.Redis()
