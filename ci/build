@@ -1,0 +1,11 @@
+#!/bin/sh
+set -ex
+
+cd "$(dirname $0)"/..
+
+. ./ci/version
+mkdir -p dist
+
+CGO_ENABLED=0 go build -ldflags "-s -w -X main.Version=$VERSION -extldflags '-static'" -o dist/auth main.go
+echo Built auth
+
