@@ -77,14 +77,14 @@ var doc = `{
                         "type": "string",
                         "description": "Email",
                         "name": "email",
-                        "in": "query",
+                        "in": "formData",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "Password",
                         "name": "password",
-                        "in": "query",
+                        "in": "formData",
                         "required": true
                     }
                 ],
@@ -141,82 +141,31 @@ var doc = `{
                 }
             }
         },
-        "/api/users": {
+        "/projects": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Listado de Usuarios",
+                "description": "Display Projects",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Projects"
                 ],
-                "summary": "UserList",
+                "summary": "Get Projects",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.User"
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Guardar datos de Usuario",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "UserStore",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Username",
-                        "name": "username",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Email",
-                        "name": "email",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Role",
-                        "name": "role",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Password",
-                        "name": "password",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "type": "string"
                         }
                     },
                     "400": {
@@ -225,8 +174,14 @@ var doc = `{
                             "type": "string"
                         }
                     },
-                    "422": {
-                        "description": "Unprocessable Entity",
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "type": "string"
                         }
@@ -234,25 +189,29 @@ var doc = `{
                 }
             }
         },
-        "/api/users/{id}": {
+        "/projects/{id}/": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Consultar Usuario",
+                "description": "Display Project Detail",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Projects"
                 ],
-                "summary": "UserShow",
+                "summary": "Project Detail",
+                "operationId": "get-string-by-int",
                 "parameters": [
                     {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "type": "integer",
-                        "description": "Id",
+                        "description": "Project",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -262,7 +221,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "type": "string"
                         }
                     },
                     "400": {
@@ -273,60 +232,42 @@ var doc = `{
                     },
                     "404": {
                         "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "type": "string"
                         }
                     }
                 }
             },
-            "put": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Actualizar datos de Usuario",
+            "post": {
+                "description": "Project Upvote",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Projects"
                 ],
-                "summary": "UserUpdate",
+                "summary": "Project Upvote",
+                "operationId": "get-string-by-int",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Id",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Project",
                         "name": "id",
                         "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Username",
-                        "name": "username",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Email",
-                        "name": "email",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Role",
-                        "name": "role",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Password",
-                        "name": "password",
-                        "in": "query",
                         "required": true
                     }
                 ],
@@ -334,7 +275,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "type": "string"
                         }
                     },
                     "400": {
@@ -349,8 +290,8 @@ var doc = `{
                             "type": "string"
                         }
                     },
-                    "422": {
-                        "description": "Unprocessable Entity",
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "type": "string"
                         }
@@ -358,23 +299,27 @@ var doc = `{
                 }
             },
             "delete": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Borrado de Usuario",
+                "description": "Project Downvote",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Projects"
                 ],
-                "summary": "UserDelete",
+                "summary": "Project Downvote",
+                "operationId": "get-string-by-int",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Id",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Project",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -395,6 +340,12 @@ var doc = `{
                     },
                     "404": {
                         "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "type": "string"
                         }
@@ -437,72 +388,6 @@ var doc = `{
                             "type": "string"
                         }
                     }
-                }
-            }
-        },
-        "/test": {
-            "get": {
-                "description": "Test",
-                "produces": [
-                    "text/html"
-                ],
-                "tags": [
-                    "Home"
-                ],
-                "summary": "Test",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        }
-    },
-    "definitions": {
-        "models.User": {
-            "type": "object",
-            "required": [
-                "email",
-                "password",
-                "role",
-                "username"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
                 }
             }
         }

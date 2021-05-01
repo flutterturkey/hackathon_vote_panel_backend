@@ -20,7 +20,6 @@ func Init(app *echo.Echo) {
 	app.Use(middlewares.Recover())
 
 	app.GET("/", controllers.Index)
-	app.GET("/test", controllers.Test)
 	app.GET("/ready", controllers.Ready)
 	app.GET("/docs/*", echoSwagger.WrapHandler)
 
@@ -29,13 +28,13 @@ func Init(app *echo.Echo) {
 		api.POST("/login", controllers.Login)
 		api.GET("/logout", controllers.Logout)
 
-		users := api.Group("/users")
+		projects := api.Group("/projects")
 		{
-			users.GET("", controllers.UserList)
-			users.POST("", controllers.UserStore)
-			users.GET("/:id", controllers.UserShow)
-			users.PUT("/:id", controllers.UserUpdate)
-			users.DELETE("/:id", controllers.UserDelete)
+			projects.GET("", controllers.ProjectList)
+			projects.GET("/", controllers.ProjectList)
+			projects.GET("/:id", controllers.ProjectDetail)
+			projects.POST("/:id", controllers.ProjectUpvote)
+			projects.DELETE("/:id", controllers.ProjectDownvote)
 		}
 	}
 

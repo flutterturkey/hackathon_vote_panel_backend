@@ -1,12 +1,12 @@
 package controllers
 
 import (
-	"fmt"
+	"github.com/labstack/echo/v4"
 	"goBoilterplate/app/helpers"
 	"goBoilterplate/app/models"
+	"goBoilterplate/config"
 	"net/http"
-
-	"github.com/labstack/echo/v4"
+	"time"
 )
 
 // Index godoc
@@ -20,7 +20,8 @@ import (
 // @Failure 500 {string} string
 // @Router / [get]
 func Index(c echo.Context) error {
-	return c.JSON(200, "Welcome to Echo")
+	response := models.ProjectsResponse{Error: "Not Found", Data: nil}
+	return c.JSON(http.StatusNotFound, response)
 }
 
 // Login godoc
@@ -28,8 +29,8 @@ func Index(c echo.Context) error {
 // @Description Login User in API
 // @Tags Auth
 // @Produce  json
-// @Param email query string true "Email"
-// @Param password query string true "Password"
+// @Param email formData string true "Email"
+// @Param password formData string true "Password"
 // @Success 200 {string} string
 // @Failure 404 {string} string
 // @Failure 500 {string} string
@@ -50,9 +51,17 @@ func Login(c echo.Context) error {
 		if err != nil {
 			return c.JSON(500, "Server Error")
 		}
-		return c.JSON(200, map[string]string{"token": token})
+
+		err = config.DB.Model(&user).Where("email = ? and password = ?", login.Email, login.Password).Update("login", time.Now()).Error
+
+		if err != nil {
+			return c.JSON(http.StatusOK, models.BaseResponse{Error: true, Data: models.Message{Message: err.Error()}})
+		}
+		response := models.BaseResponse{Data: map[string]string{"token": token}}
+		return c.JSON(http.StatusOK, response)
 	}
-	return c.JSON(404, "Not Found")
+
+	return c.JSON(http.StatusOK, models.BaseResponse{Error: true, Data: models.Message{Message: "E-mail veya şifre yanlış!"}})
 }
 
 // Logout godoc
@@ -66,26 +75,18 @@ func Login(c echo.Context) error {
 // @Router /api/logout [get]
 func Logout(c echo.Context) error {
 	user := helpers.AuthGetUser(c)
-	if user != nil {
-		return c.JSON(200, user)
+	if user == nil {
+		return c.JSON(http.StatusUnauthorized, models.BaseResponse{Error: true, Data: models.Message{Message: "Hacı yanlış bilgilerle deneme işte"}})
 	}
-	return c.JSON(401, "Unauthorized")
-}
 
-//Test godoc
-// @Summary Test
-// @Description Test
-// @Tags Home
-// @Produce html
-// @Success 200 {string} string
-// @Failure 400 {string} string
-// @Failure 404 {string} string
-// @Failure 500 {string} string
-// @Router /test [get]
-func Test(c echo.Context) error {
-	req := c.Request()
-	format := `<code> Protocol: %s<br> Host: %s<br> Method: %s<br> Path: %s<br> </code>`
-	return c.HTML(http.StatusOK, fmt.Sprintf(format, req.Proto, req.Host, req.Method, req.URL.Path))
+	err := config.DB.Model(&user).Where("id = ?", user.ID).Update("logout", time.Now()).Error
+
+	if err != nil {
+		return c.JSON(http.StatusOK, models.BaseResponse{Error: true, Data: models.Message{Message: err.Error()}})
+	}
+
+	return c.JSON(http.StatusOK, models.BaseResponse{Data: models.Message{Message: "Çıkış başarılı!"}})
+
 }
 
 // Ready godoc

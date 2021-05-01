@@ -13,7 +13,7 @@ import (
 func AuthMakeToken(user *models.User) (string, error) {
 	secret := os.Getenv("APP_KEY")
 	claims := models.JwtClaims{
-		ID: user.ID,
+		User: *user,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
 		},
@@ -29,9 +29,5 @@ func AuthGetUser(c echo.Context) *models.User {
 	token := c.Get("token").(*jwt.Token)
 	claims := token.Claims.(*models.JwtClaims)
 
-	user := models.UserShow(claims.ID)
-	if user != nil {
-		return user
-	}
-	return nil
+	return &claims.User
 }

@@ -4,7 +4,6 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
-	"goBoilterplate/app/console"
 	"goBoilterplate/app/models"
 	"goBoilterplate/app/router"
 	"goBoilterplate/config"
@@ -33,15 +32,22 @@ func main() {
 	if err != nil {
 		app.Logger.Fatal(err)
 	}
+
 	app.Logger.Info("Db connected")
+
+
 	db.AutoMigrate(&models.User{})
-	db.AutoMigrate(&models.UserProfile{})
-	db.AutoMigrate(&models.Profile{})
+	db.AutoMigrate(&models.Project{})
+
+	//db.Model(&models.User{}).CreateTable()
+	//db.Model(&models.Project{}).CreateTable()
+	//db.Create(&models.User{Name: "admin", Email: "adem@flutterturkiye.org", Password: "1234", TeamName: "admin"})
+	//db.Create(&models.Project{TeamName: "test", Name: "admin", Description: "lorem ipsum"})
 
 	defer db.Close()
 
-	config.Redis()
-	console.Schedule()
+	//console.Schedule()
+
 	router.Init(app)
 
 	app.Server.Addr = ":8080"

@@ -1,6 +1,6 @@
 .env
 .env.docker
-
+.idea/
 *.txt
 
 # Binaries for programs and plugins

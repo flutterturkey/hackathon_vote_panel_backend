@@ -1,22 +1,3 @@
-definitions:
-  models.User:
-    properties:
-      email:
-        type: string
-      id:
-        type: integer
-      password:
-        type: string
-      role:
-        type: string
-      username:
-        type: string
-    required:
-    - email
-    - password
-    - role
-    - username
-    type: object
 info:
   contact: {}
   description: API documentation by Swagger
@@ -53,12 +34,12 @@ paths:
       description: Login User in API
       parameters:
       - description: Email
-        in: query
+        in: formData
         name: email
         required: true
         type: string
       - description: Password
-        in: query
+        in: formData
         name: password
         required: true
         type: string
@@ -99,73 +80,14 @@ paths:
       summary: Logout
       tags:
       - Auth
-  /api/users:
+  /projects:
     get:
-      description: Listado de Usuarios
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/models.User'
-            type: array
-      security:
-      - ApiKeyAuth: []
-      summary: UserList
-      tags:
-      - User
-    post:
-      description: Guardar datos de Usuario
+      description: Display Projects
       parameters:
-      - description: Username
-        in: query
-        name: username
-        required: true
-        type: string
-      - description: Email
-        in: query
-        name: email
-        required: true
-        type: string
-      - description: Role
-        in: query
-        name: role
-        required: true
-        type: string
-      - description: Password
-        in: query
-        name: password
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/models.User'
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-        "422":
-          description: Unprocessable Entity
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: UserStore
-      tags:
-      - User
-  /api/users/{id}:
-    delete:
-      description: Borrado de Usuario
-      parameters:
-      - description: Id
-        in: path
-        name: id
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
         required: true
         type: string
       produces:
@@ -183,15 +105,25 @@ paths:
           description: Not Found
           schema:
             type: string
-      security:
-      - ApiKeyAuth: []
-      summary: UserDelete
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get Projects
       tags:
-      - User
-    get:
-      description: Consultar Usuario
+      - Projects
+  /projects/{id}/:
+    delete:
+      description: Project Downvote
+      operationId: get-string-by-int
       parameters:
-      - description: Id
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Project
         in: path
         name: id
         required: true
@@ -202,7 +134,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.User'
+            type: string
         "400":
           description: Bad Request
           schema:
@@ -211,46 +143,35 @@ paths:
           description: Not Found
           schema:
             type: string
-      security:
-      - ApiKeyAuth: []
-      summary: UserShow
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Project Downvote
       tags:
-      - User
-    put:
-      description: Actualizar datos de Usuario
+      - Projects
+    get:
+      description: Display Project Detail
+      operationId: get-string-by-int
       parameters:
-      - description: Id
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Project
         in: path
         name: id
         required: true
-        type: string
-      - description: Username
-        in: query
-        name: username
-        required: true
-        type: string
-      - description: Email
-        in: query
-        name: email
-        required: true
-        type: string
-      - description: Role
-        in: query
-        name: role
-        required: true
-        type: string
-      - description: Password
-        in: query
-        name: password
-        required: true
-        type: string
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.User'
+            type: string
         "400":
           description: Bad Request
           schema:
@@ -259,15 +180,50 @@ paths:
           description: Not Found
           schema:
             type: string
-        "422":
-          description: Unprocessable Entity
+        "500":
+          description: Internal Server Error
           schema:
             type: string
-      security:
-      - ApiKeyAuth: []
-      summary: UserUpdate
+      summary: Project Detail
       tags:
-      - User
+      - Projects
+    post:
+      description: Project Upvote
+      operationId: get-string-by-int
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Project
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Project Upvote
+      tags:
+      - Projects
   /ready:
     get:
       description: Is api ready
@@ -291,31 +247,6 @@ paths:
           schema:
             type: string
       summary: Ready status
-      tags:
-      - Home
-  /test:
-    get:
-      description: Test
-      produces:
-      - text/html
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-        "404":
-          description: Not Found
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Test
       tags:
       - Home
 securityDefinitions:

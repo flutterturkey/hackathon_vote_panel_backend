@@ -22,7 +22,6 @@ func TestMain(m *testing.M) {
 	}
 	defer db.Close()
 
-	config.Redis()
-
 	os.Exit(m.Run())
+
 }
