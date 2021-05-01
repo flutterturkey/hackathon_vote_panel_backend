@@ -35,14 +35,8 @@ func main() {
 
 	app.Logger.Info("Db connected")
 
-
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Project{})
-
-	//db.Model(&models.User{}).CreateTable()
-	//db.Model(&models.Project{}).CreateTable()
-	//db.Create(&models.User{Name: "admin", Email: "adem@flutterturkiye.org", Password: "1234", TeamName: "admin"})
-	//db.Create(&models.Project{TeamName: "test", Name: "admin", Description: "lorem ipsum"})
 
 	defer db.Close()
 
