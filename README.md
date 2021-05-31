@@ -1,6 +1,6 @@
 # Flutter Festivali Hackathon Oylama Paneli API
 
-## Run postgres and redis
+## Run postgres
 ```shell
 docker-compose up -d postgres
 ```
