@@ -2,7 +2,7 @@
 
 ## Run postgres and redis
 ```shell
-docker-compose up -d redis postgres
+docker-compose up -d postgres
 ```
 
 ## Swagger generate
