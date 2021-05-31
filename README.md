@@ -1,4 +1,4 @@
-# GO API
+# Flutter Festivali Hackathon Oylama Paneli API
 
 ## Run postgres and redis
 ```shell
